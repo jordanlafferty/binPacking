@@ -1,3 +1,6 @@
+import timeit
+
+
 def fixOrder(m1, m2, m3):
     # rearranges the order of the length, width and height
     # returning them in order from largest to smallest
@@ -38,7 +41,6 @@ class Bin:
         self.width = w
         self.height = h
         self.volume = l * w * h
-        self.theBin = [l, w, h]
         self.binArr = []
         self.currBin = []
 
@@ -46,9 +48,9 @@ class Bin:
         # this algorithm will take the most bins, but is the fastest
 
         count = 0  # keeps track of how many bins you will need
-        newSide1 = self.theBin[0]  # largest dimension of the packing bin
-        newSide2 = self.theBin[1]  # middle dimension of the packing bin
-        newSide3 = self.theBin[2]  # smallest dimension of the packing bin
+        newSide1 = self.length  # largest dimension of the packing bin
+        newSide2 = self.width  # middle dimension of the packing bin
+        newSide3 = self.height  # smallest dimension of the packing bin
 
         for i in range(len(boxArr)):
             # goes through every box and tries to put it in the current container
@@ -84,6 +86,7 @@ class Bin:
         # are any boxes left in the current bin, add the current bin to array of bins
         if self.currBin:
             self.binArr.append(self.currBin)
+            count += 1
 
         # print out each
         print("You need " + str(count) + " bins to fit the boxes")
@@ -93,9 +96,9 @@ class Bin:
     def pack2(self, boxArr):
         # this algorithm is the second fastest and will take the second amount of bins
         totalVolume = 0  # total volume of the boxes inside the current bin
-        newSide1 = self.theBin[0]  # largest dimension of the packing bin
-        newSide2 = self.theBin[1]  # middle dimension of the packing bin
-        newSide3 = self.theBin[2]  # smallest dimension of the packing bin
+        newSide1 = self.length  # largest dimension of the packing bin
+        newSide2 = self.width  # middle dimension of the packing bin
+        newSide3 = self.height  # smallest dimension of the packing bin
         i = 0
 
         # goes through every box to fit it into a bin
@@ -162,9 +165,9 @@ class Bin:
     def pack3(self, boxArr):
         # this algorithm is the slowest but has the best solution
         totalVolume = 0  # total volume of the boxes inside the current bin
-        newSide1 = self.theBin[0]  # largest dimension of the packing bin
-        newSide2 = self.theBin[1]  # middle dimension of the packing bin
-        newSide3 = self.theBin[2]  # smallest dimension of the packing bin
+        newSide1 = self.length  # largest dimension of the packing bin
+        newSide2 = self.width  # middle dimension of the packing bin
+        newSide3 = self.height  # smallest dimension of the packing bin
         fitted = []  # indexes of the boxes that were already put in a bin
         alreadyUsed = 0  # sees if the current box was already placed in a box
         i = 0
@@ -213,7 +216,7 @@ class Bin:
 
                         # checks if the box can fit focused on the middle dimension, also making sure
                         # that when the box added will be able to fit by limiting the volume to 3/4
-                        elif newSide2 >= 0 and newSide3 > 0 and totalVolume <= self.volume * 3 / 4:
+                        elif newSide2 >= 0 and newSide3 > 0  and totalVolume <= self.volume * 3 / 4:
                             fitted.append(j)  # add index to show the box was used
                             self.currBin.append(aBox)  # add box to current bin
                             newSide1 = newSide1 + aBox[0]
@@ -221,7 +224,7 @@ class Bin:
 
                         # checks if the box can fit focused on the smallest dimension, also making sure
                         # that when the box added will be able to fit by limiting the volume to 3/4
-                        elif newSide3 >= 0 and totalVolume <= self.volume * 3 / 4:
+                        elif newSide3 >= 0  and totalVolume <= self.volume * 3 / 4:
                             fitted.append(j)  # add index to show the box was used
                             self.currBin.append(aBox)  # add box to current bin
                             # reset the sides not focused on
@@ -355,14 +358,14 @@ def packingAlgorithm3():
     theBins3.pack3(b3.theBoxes)
 
 
-print("Algorithm 1 - Fastest But Uses The Most Bins on Average: ")
-packingAlgorithm1()
+print("Algorithm 1 - The Most Bins on Average: ")
+print(timeit.timeit('packingAlgorithm1()', setup='from __main__ import packingAlgorithm1', number=1))
 print("\n \n")
-print("Algorithm 2 - Middle Speed And Bins on Average: ")
-packingAlgorithm2()
+print("Algorithm 2 - The Middle Amount Bins on Average: ")
+print(timeit.timeit('packingAlgorithm2()', setup='from __main__ import packingAlgorithm2', number=1))
 print("\n \n")
-print("Algorithm 3 - Slowest But Uses The Least Bins on Average: ")
-packingAlgorithm3()
+print("Algorithm 3 - The Least Bins on Average: ")
+print(timeit.timeit('packingAlgorithm3()', setup='from __main__ import packingAlgorithm3', number=1))
 # Package bin container is 12" x 9" x 6" box . It should be able to include 3 types of cubic items:
 # 5" x 4" x 3"
 # 3" x 3" x 3"
