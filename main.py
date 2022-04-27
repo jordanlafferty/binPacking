@@ -171,6 +171,7 @@ class Bin:
         fitted = []  # indexes of the boxes that were already put in a bin
         alreadyUsed = 0  # sees if the current box was already placed in a box
         i = 0
+
         # goes through every box to fit it into a bin
         while i < len(boxArr):
             # makes sure the current box has not already been used
@@ -182,6 +183,8 @@ class Bin:
                 j = i
                 # goes through the rest of the boxes to see if any can fit
                 while j < len(boxArr):
+                    x = self.currBin
+                    y = self.binArr
                     aBox = boxArr[j]  # current box
 
                     # check if the current box has already been placed
@@ -189,6 +192,7 @@ class Bin:
                     for x in range(len(fitted)):
                         if j == fitted[x]:
                             check = 1
+                            j += 1
                             break
 
                     # if the box was placed then no need to check if it will fit
@@ -216,7 +220,7 @@ class Bin:
 
                         # checks if the box can fit focused on the middle dimension, also making sure
                         # that when the box added will be able to fit by limiting the volume to 3/4
-                        elif newSide2 >= 0 and newSide3 > 0  and totalVolume <= self.volume * 3 / 4:
+                        elif newSide2 >= 0 and newSide3 > 0 and totalVolume <= self.volume * 3 / 4:
                             fitted.append(j)  # add index to show the box was used
                             self.currBin.append(aBox)  # add box to current bin
                             newSide1 = newSide1 + aBox[0]
@@ -224,7 +228,7 @@ class Bin:
 
                         # checks if the box can fit focused on the smallest dimension, also making sure
                         # that when the box added will be able to fit by limiting the volume to 3/4
-                        elif newSide3 >= 0  and totalVolume <= self.volume * 3 / 4:
+                        elif newSide3 >= 0 and totalVolume <= self.volume * 3 / 4:
                             fitted.append(j)  # add index to show the box was used
                             self.currBin.append(aBox)  # add box to current bin
                             # reset the sides not focused on
@@ -349,9 +353,9 @@ def packingAlgorithm3():
 
     theBins2.pack3(b2.theBoxes)
 
-    theBins3 = Bin(12, 9, 6)
+    theBins3 = Bin(12, 9, 7)
     b3 = Boxes()
-    b3.addBoxes(5, 4, 3, 6)
+    b3.addBoxes(5, 4, 3, 12)
     b3.addBoxes(3, 3, 3, 12)
     b3.addBoxes(6, 2, 2, 6)
 
